@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:WinTail.Avalonia.ViewModels"
+             xmlns:avaloniaEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
@@ -8,11 +9,6 @@
              x:DataType="vm:LogTabViewModel">
 
     <UserControl.Styles>
-        <Style Selector="TextBox.logcontent">
-            <Setter Property="FontFamily" Value="Cascadia Mono, Consolas, Courier New, monospace"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundAltHighBrush}"/>
-        </Style>
         <Style Selector="Button.toolbutton">
             <Setter Property="Margin" Value="4"/>
             <Setter Property="Padding" Value="10,6"/>
@@ -91,17 +87,16 @@
             </DockPanel>
         </Border>
 
-        <!-- Log Content -->
-        <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                     VerticalScrollBarVisibility="Auto">
-            <TextBox Text="{Binding LogContent}"
-                    Classes="logcontent"
-                    IsReadOnly="True"
-                    TextWrapping="NoWrap"
-                    AcceptsReturn="True"
-                    BorderThickness="0"
-                    Padding="12"/>
-        </ScrollViewer>
+        <!-- Log Content with Syntax Highlighting -->
+        <avaloniaEdit:TextEditor x:Name="Editor"
+                                FontFamily="Cascadia Mono, Consolas, Courier New, monospace"
+                                FontSize="12"
+                                ShowLineNumbers="True"
+                                IsReadOnly="True"
+                                WordWrap="False"
+                                Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                                VerticalScrollBarVisibility="Auto"
+                                HorizontalScrollBarVisibility="Auto"/>
     </DockPanel>
 
 </UserControl>
