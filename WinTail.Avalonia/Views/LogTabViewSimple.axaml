@@ -1,0 +1,41 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:WinTail.Avalonia.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="WinTail.Avalonia.Views.LogTabViewSimple"
+             x:DataType="vm:LogTabViewModel">
+
+    <DockPanel>
+        <!-- Simple Toolbar -->
+        <Border DockPanel.Dock="Top" 
+                Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
+                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="8">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <TextBlock Text="{Binding DisplayTitle}" 
+                          VerticalAlignment="Center"
+                          FontWeight="SemiBold"/>
+                <TextBlock Text="(Simple TextBox version for testing)" 
+                          VerticalAlignment="Center"
+                          Foreground="Gray"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Simple TextBox with direct binding wrapped in ScrollViewer -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                     HorizontalScrollBarVisibility="Auto">
+            <TextBox Text="{Binding LogContent}"
+                    FontFamily="Cascadia Mono, Consolas, Courier New, monospace"
+                    FontSize="12"
+                    IsReadOnly="True"
+                    TextWrapping="NoWrap"
+                    AcceptsReturn="True"
+                    Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                    BorderThickness="0"/>
+        </ScrollViewer>
+    </DockPanel>
+
+</UserControl>

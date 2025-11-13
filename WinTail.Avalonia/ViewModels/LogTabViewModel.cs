@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -49,39 +50,75 @@ namespace WinTail.Avalonia.ViewModels
         /// </summary>
         public string DisplayTitle => $"{FileName} - Updated: {LastUpdate:HH:mm:ss}";
 
+        // Partial method to intercept LogContent changes
+        partial void OnLogContentChanged(string value)
+        {
+            Debug.WriteLine($"[LogTabViewModel] ***** LogContent CHANGED ***** Length: {value?.Length ?? 0}");
+            if (value != null && value.Length > 0)
+            {
+                Debug.WriteLine($"[LogTabViewModel] ***** LogContent first 200 chars: {value.Substring(0, Math.Min(200, value.Length))}");
+            }
+        }
+
         public LogTabViewModel(LogTab logTab)
         {
+            Debug.WriteLine($"[LogTabViewModel] Constructor called for: {logTab.FilePath}");
+            
             _logTab = logTab;
             FilePath = logTab.FilePath;
             FileName = logTab.FileName;
 
+            Debug.WriteLine($"[LogTabViewModel] FilePath={FilePath}, FileName={FileName}");
+
             _fileWatcher = new FileWatcherService(logTab.FilePath);
             _fileWatcher.NewLinesAdded += OnNewLinesAdded;
 
+            Debug.WriteLine($"[LogTabViewModel] Calling LoadInitialContent...");
             LoadInitialContent();
+            
+            Debug.WriteLine($"[LogTabViewModel] Calling StartWatching...");
             _fileWatcher.StartWatching();
+            
+            Debug.WriteLine($"[LogTabViewModel] Constructor complete. LogContent length: {LogContent?.Length ?? 0}");
         }
 
         private void LoadInitialContent()
         {
+            Debug.WriteLine($"[LogTabViewModel] LoadInitialContent: Starting...");
+            
             try
             {
                 _logLines.Clear();
-                _logLines.AddRange(_fileWatcher.ReadLastLines(1000));
+                var lines = _fileWatcher.ReadLastLines(1000);
+                
+                Debug.WriteLine($"[LogTabViewModel] LoadInitialContent: Got {lines.Count} lines from FileWatcher");
+                
+                _logLines.AddRange(lines);
+                
+                Debug.WriteLine($"[LogTabViewModel] LoadInitialContent: Total lines in _logLines: {_logLines.Count}");
+                
                 UpdateLogDisplay();
                 UpdateTimestamp();
+                
+                Debug.WriteLine($"[LogTabViewModel] LoadInitialContent: Complete. LogContent length: {LogContent?.Length ?? 0}");
             }
             catch (Exception ex)
             {
+                Debug.WriteLine($"[LogTabViewModel] LoadInitialContent ERROR: {ex.Message}");
+                Debug.WriteLine($"[LogTabViewModel] LoadInitialContent Stack Trace: {ex.StackTrace}");
                 LogContent = $"Error loading file: {ex.Message}";
             }
         }
 
         private void OnNewLinesAdded(object? sender, string newContent)
         {
+            Debug.WriteLine($"[LogTabViewModel] OnNewLinesAdded: Received {newContent?.Length ?? 0} characters");
+            
             Dispatcher.UIThread.InvokeAsync(() =>
             {
                 var lines = newContent.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+                Debug.WriteLine($"[LogTabViewModel] OnNewLinesAdded: Split into {lines.Length} lines");
+                
                 foreach (var line in lines)
                 {
                     if (!string.IsNullOrEmpty(line) || lines.Length > 1)
@@ -96,6 +133,8 @@ namespace WinTail.Avalonia.ViewModels
                     _logLines.RemoveAt(0);
                 }
 
+                Debug.WriteLine($"[LogTabViewModel] OnNewLinesAdded: Total lines now: {_logLines.Count}");
+
                 UpdateLogDisplay();
                 UpdateTimestamp();
             });
@@ -103,17 +142,26 @@ namespace WinTail.Avalonia.ViewModels
 
         private void UpdateLogDisplay()
         {
+            Debug.WriteLine($"[LogTabViewModel] UpdateLogDisplay: Starting with {_logLines.Count} lines");
+            
+            string newContent;
             if (IsFilterActive && !string.IsNullOrWhiteSpace(FilterTerm))
             {
                 var filteredLines = _logLines
                     .Where(line => line.Contains(FilterTerm, StringComparison.OrdinalIgnoreCase))
                     .ToList();
-                LogContent = string.Join(Environment.NewLine, filteredLines);
+                newContent = string.Join(Environment.NewLine, filteredLines);
+                Debug.WriteLine($"[LogTabViewModel] UpdateLogDisplay: Filtered to {filteredLines.Count} lines");
             }
             else
             {
-                LogContent = string.Join(Environment.NewLine, _logLines);
+                newContent = string.Join(Environment.NewLine, _logLines);
+                Debug.WriteLine($"[LogTabViewModel] UpdateLogDisplay: All lines included");
             }
+            
+            Debug.WriteLine($"[LogTabViewModel] UpdateLogDisplay: About to set LogContent to {newContent?.Length ?? 0} characters");
+            LogContent = newContent;
+            Debug.WriteLine($"[LogTabViewModel] UpdateLogDisplay: LogContent property now has {LogContent?.Length ?? 0} characters");
         }
 
         private void UpdateTimestamp()
@@ -160,14 +208,13 @@ namespace WinTail.Avalonia.ViewModels
         [RelayCommand]
         private void Refresh()
         {
+            Debug.WriteLine($"[LogTabViewModel] Refresh: Called");
             LoadInitialContent();
         }
 
         [RelayCommand]
         private async Task CopyContent()
         {
-            // Note: Clipboard access requires TopLevel which is only available from Views
-            // This is a simplified version - in production, pass TopLevel reference or use a service
             try
             {
                 await Dispatcher.UIThread.InvokeAsync(async () =>
@@ -179,17 +226,19 @@ namespace WinTail.Avalonia.ViewModels
                     if (topLevel?.Clipboard != null)
                     {
                         await topLevel.Clipboard.SetTextAsync(LogContent);
+                        Debug.WriteLine($"[LogTabViewModel] CopyContent: Copied {LogContent?.Length ?? 0} characters to clipboard");
                     }
                 });
             }
-            catch
+            catch (Exception ex)
             {
-                // Clipboard operation failed
+                Debug.WriteLine($"[LogTabViewModel] CopyContent ERROR: {ex.Message}");
             }
         }
 
         public void Cleanup()
         {
+            Debug.WriteLine($"[LogTabViewModel] Cleanup: Called for {FilePath}");
             _fileWatcher?.Dispose();
         }
     }
