@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="WinTail.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WinTail"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="WinTail - Log Viewer">
+
+    <Window.SystemBackdrop>
+        <MicaBackdrop />
+    </Window.SystemBackdrop>
+
+    <Grid>
+        <TabView x:Name="LogTabView"
+                 TabWidthMode="SizeToContent"
+                 CanDragTabs="True"
+                 CanReorderTabs="True"
+                 AddTabButtonClick="LogTabView_AddTabButtonClick"
+                 TabCloseRequested="LogTabView_TabCloseRequested">
+            <TabView.TabStripHeader>
+                <Grid Height="40" Padding="12,0,0,0">
+                    <TextBlock Text="WinTail" 
+                               VerticalAlignment="Center"
+                               FontWeight="SemiBold"
+                               FontSize="14"/>
+                </Grid>
+            </TabView.TabStripHeader>
+            <TabView.TabStripFooter>
+                <Button Content="Abrir Log..." 
+                        Click="OpenLogButton_Click"
+                        Margin="0,0,12,0"
+                        Style="{StaticResource AccentButtonStyle}"/>
+            </TabView.TabStripFooter>
+        </TabView>
+
+        <!-- Mensagem quando não há tabs -->
+        <Grid x:Name="EmptyStatePanel" Visibility="Visible">
+            <StackPanel HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"
+                        Spacing="16">
+                <FontIcon Glyph="&#xE8A5;" 
+                          FontSize="64"
+                          Foreground="{ThemeResource SystemAccentColor}"/>
+                <TextBlock Text="Nenhum ficheiro de log aberto" 
+                           FontSize="20"
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="Clique em 'Abrir Log...' ou arraste um ficheiro aqui" 
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                           HorizontalAlignment="Center"/>
+                <Button Content="Abrir Log..." 
+                        Click="OpenLogButton_Click"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource AccentButtonStyle}"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
