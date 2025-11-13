@@ -13,6 +13,12 @@
             <Setter Property="Margin" Value="4"/>
             <Setter Property="Padding" Value="10,6"/>
         </Style>
+        <Style Selector="Button.close-x">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="4"/>
+            <Setter Property="Width" Value="24"/>
+            <Setter Property="Height" Value="24"/>
+        </Style>
     </UserControl.Styles>
 
     <DockPanel>
@@ -95,10 +101,11 @@
                 IsVisible="{Binding IsSearchVisible}">
             <DockPanel>
                 <Button DockPanel.Dock="Right" 
-                       Content="×" 
-                       FontSize="16"
-                       Padding="8,4"
-                       Command="{Binding ToggleSearchCommand}"/>
+                       Classes="close-x"
+                       Command="{Binding ToggleSearchCommand}">
+                    <PathIcon Data="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                             Width="14" Height="14"/>
+                </Button>
                 <TextBox Text="{Binding SearchTerm}"
                         Watermark="Search in log..."
                         MinWidth="300"/>
@@ -120,10 +127,11 @@
                            Command="{Binding ApplyFilterCommand}"/>
                     <Button Content="Clear" 
                            Command="{Binding ClearFilterCommand}"/>
-                    <Button Content="×" 
-                           FontSize="16"
-                           Padding="8,4"
-                           Command="{Binding ToggleFilterCommand}"/>
+                    <Button Classes="close-x"
+                           Command="{Binding ToggleFilterCommand}">
+                        <PathIcon Data="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                                 Width="14" Height="14"/>
+                    </Button>
                 </StackPanel>
                 <TextBox Text="{Binding FilterTerm}"
                         Watermark="Filter lines containing..."

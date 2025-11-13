@@ -3,7 +3,9 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using AvaloniaEdit;
+using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using WinTail.Avalonia.Services;
 using WinTail.Avalonia.ViewModels;
 
@@ -13,86 +15,76 @@ namespace WinTail.Avalonia.Views
     {
         private TextEditor? _editor;
         private LogTabViewModel? _viewModel;
-        private bool _isInitialized = false;
 
         public LogTabView()
         {
             InitializeComponent();
             
-            // Subscribe to when the control is attached to visual tree
-            AttachedToVisualTree += OnAttachedToVisualTree;
-        }
-
-        private void OnAttachedToVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
-        {
-            if (_isInitialized) return;
-
-            // Get reference to the TextEditor
-            _editor = this.FindControl<TextEditor>("Editor");
+            // Set up when data context changes
+            DataContextChanged += OnDataContextChanged;
             
-            if (_editor == null)
-            {
-                // Try again after a short delay
-                Dispatcher.UIThread.Post(() =>
-                {
-                    _editor = this.FindControl<TextEditor>("Editor");
-                    InitializeEditor();
-                }, DispatcherPriority.Loaded);
-            }
-            else
-            {
-                InitializeEditor();
-            }
+            // Also try to initialize when loaded
+            Loaded += OnLoaded;
         }
 
-        private void InitializeEditor()
+        private void OnLoaded(object? sender, RoutedEventArgs e)
         {
-            if (_editor == null || _isInitialized) return;
+            Debug.WriteLine("LogTabView.OnLoaded called");
+            TryInitialize();
+        }
 
-            _isInitialized = true;
-
+        private void OnDataContextChanged(object? sender, EventArgs e)
+        {
+            Debug.WriteLine($"LogTabView.OnDataContextChanged: DataContext = {DataContext?.GetType().Name}");
+            
             if (DataContext is LogTabViewModel viewModel)
             {
                 _viewModel = viewModel;
-                SetupViewModel();
+                TryInitialize();
             }
-            
-            // Subscribe to DataContext changes
-            DataContextChanged += OnDataContextChanged;
         }
 
-        private void OnDataContextChanged(object? sender, System.EventArgs e)
+        private void TryInitialize()
         {
-            if (DataContext is LogTabViewModel viewModel && _editor != null && !_isInitialized)
+            // Get editor if we don't have it yet
+            if (_editor == null)
             {
-                _viewModel = viewModel;
-                _isInitialized = true;
-                SetupViewModel();
+                _editor = this.FindControl<TextEditor>("Editor");
+                Debug.WriteLine($"Editor found: {_editor != null}");
+            }
+
+            // If we have both editor and viewmodel, set up
+            if (_editor != null && _viewModel != null)
+            {
+                SetupEditor();
             }
         }
 
-        private void SetupViewModel()
+        private void SetupEditor()
         {
-            if (_viewModel == null || _editor == null) return;
+            if (_editor == null || _viewModel == null) return;
 
-            // Apply syntax highlighting based on file path
+            Debug.WriteLine($"Setting up editor for: {_viewModel.FilePath}");
+
+            // Apply syntax highlighting
             try
             {
                 var highlighting = SyntaxHighlightingService.GetHighlightingForFile(_viewModel.FilePath);
                 if (highlighting != null)
                 {
                     _editor.SyntaxHighlighting = highlighting;
+                    Debug.WriteLine($"Syntax highlighting applied: {highlighting.Name}");
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // Syntax highlighting failed, continue without it
+                Debug.WriteLine($"Syntax highlighting failed: {ex.Message}");
             }
             
-            // Subscribe to log content changes
+            // Subscribe to content changes
             _viewModel.PropertyChanged += OnViewModelPropertyChanged;
             
-            // Set initial content immediately
+            // Set initial content
             UpdateEditorContent();
         }
 
@@ -100,32 +92,43 @@ namespace WinTail.Avalonia.Views
         {
             if (e.PropertyName == nameof(LogTabViewModel.LogContent))
             {
+                Debug.WriteLine("LogContent changed, updating editor");
                 UpdateEditorContent();
             }
         }
 
         private void UpdateEditorContent()
         {
-            if (_editor == null || _viewModel == null) return;
-
-            // Use Dispatcher to ensure we're on UI thread
-            Dispatcher.UIThread.InvokeAsync(() =>
+            if (_editor == null || _viewModel == null)
             {
-                if (_editor != null && _viewModel != null)
+                Debug.WriteLine($"Cannot update content: Editor={_editor != null}, ViewModel={_viewModel != null}");
+                return;
+            }
+
+            var content = _viewModel.LogContent ?? string.Empty;
+            Debug.WriteLine($"Updating editor with {content.Length} characters");
+
+            // Update on UI thread
+            Dispatcher.UIThread.Post(() =>
+            {
+                try
                 {
-                    var content = _viewModel.LogContent ?? string.Empty;
-                    
-                    // Only update if content changed
-                    if (_editor.Text != content)
+                    if (_editor != null)
                     {
                         _editor.Text = content;
                         
                         // Scroll to end if there's content
-                        if (!string.IsNullOrEmpty(content))
+                        if (!string.IsNullOrEmpty(content) && _editor.Document != null)
                         {
                             _editor.ScrollToEnd();
                         }
+                        
+                        Debug.WriteLine("Editor text updated successfully");
                     }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Error updating editor: {ex.Message}");
                 }
             }, DispatcherPriority.Background);
         }
