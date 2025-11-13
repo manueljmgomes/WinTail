@@ -1,0 +1,107 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:WinTail.Avalonia.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="WinTail.Avalonia.Views.LogTabView"
+             x:DataType="vm:LogTabViewModel">
+
+    <UserControl.Styles>
+        <Style Selector="TextBox.logcontent">
+            <Setter Property="FontFamily" Value="Cascadia Mono, Consolas, Courier New, monospace"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundAltHighBrush}"/>
+        </Style>
+        <Style Selector="Button.toolbutton">
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Padding" Value="10,6"/>
+        </Style>
+    </UserControl.Styles>
+
+    <DockPanel>
+        <!-- Toolbar -->
+        <Border DockPanel.Dock="Top" 
+                Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
+                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="8">
+            <StackPanel Orientation="Horizontal" Spacing="4">
+                <Button Content="?? Search" 
+                       Classes="toolbutton"
+                       Command="{Binding ToggleSearchCommand}"/>
+                <Button Content="?? Filter" 
+                       Classes="toolbutton"
+                       Command="{Binding ToggleFilterCommand}"/>
+                <Button Content="?? Copy" 
+                       Classes="toolbutton"
+                       Command="{Binding CopyContentCommand}"/>
+                <Button Content="?? Refresh" 
+                       Classes="toolbutton"
+                       Command="{Binding RefreshCommand}"/>
+                <TextBlock Text="{Binding FileName}" 
+                          VerticalAlignment="Center"
+                          Margin="16,0,0,0"
+                          FontWeight="SemiBold"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Search Panel -->
+        <Border DockPanel.Dock="Top"
+                Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="12"
+                IsVisible="{Binding IsSearchVisible}">
+            <DockPanel>
+                <Button DockPanel.Dock="Right" 
+                       Content="×" 
+                       FontSize="16"
+                       Padding="8,4"
+                       Command="{Binding ToggleSearchCommand}"/>
+                <TextBox Text="{Binding SearchTerm}"
+                        Watermark="Search in log..."
+                        MinWidth="300"/>
+            </DockPanel>
+        </Border>
+
+        <!-- Filter Panel -->
+        <Border DockPanel.Dock="Top"
+                Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="12"
+                IsVisible="{Binding IsFilterVisible}">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Right" 
+                           Orientation="Horizontal" 
+                           Spacing="8">
+                    <Button Content="Apply" 
+                           Command="{Binding ApplyFilterCommand}"/>
+                    <Button Content="Clear" 
+                           Command="{Binding ClearFilterCommand}"/>
+                    <Button Content="×" 
+                           FontSize="16"
+                           Padding="8,4"
+                           Command="{Binding ToggleFilterCommand}"/>
+                </StackPanel>
+                <TextBox Text="{Binding FilterTerm}"
+                        Watermark="Filter lines containing..."
+                        MinWidth="300"/>
+            </DockPanel>
+        </Border>
+
+        <!-- Log Content -->
+        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                     VerticalScrollBarVisibility="Auto">
+            <TextBox Text="{Binding LogContent}"
+                    Classes="logcontent"
+                    IsReadOnly="True"
+                    TextWrapping="NoWrap"
+                    AcceptsReturn="True"
+                    BorderThickness="0"
+                    Padding="12"/>
+        </ScrollViewer>
+    </DockPanel>
+
+</UserControl>

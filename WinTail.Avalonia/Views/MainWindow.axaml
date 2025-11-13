@@ -1,0 +1,106 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:WinTail.Avalonia.ViewModels"
+        xmlns:views="using:WinTail.Avalonia.Views"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="700"
+        x:Class="WinTail.Avalonia.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="WinTail - Log Viewer"
+        Width="1200" Height="700"
+        WindowStartupLocation="CenterScreen">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Window.Styles>
+        <Style Selector="TabItem">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="12,8"/>
+        </Style>
+        <Style Selector="Button.toolbar">
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Padding" Value="12,6"/>
+        </Style>
+    </Window.Styles>
+
+    <DockPanel>
+        <!-- Top Toolbar -->
+        <Border DockPanel.Dock="Top" 
+                Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="8">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <Button Content="Open Log..." 
+                        Classes="toolbar"
+                        Command="{Binding OpenFileCommand}"
+                        CommandParameter="{Binding $parent[Window]}"/>
+                <TextBlock Text="|" 
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                <TextBlock Text="WinTail - Cross-Platform Log Viewer" 
+                           VerticalAlignment="Center"
+                           FontWeight="SemiBold"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Main Content -->
+        <Grid>
+            <!-- TabControl for log files -->
+            <TabControl ItemsSource="{Binding Tabs}"
+                       SelectedItem="{Binding SelectedTab}"
+                       IsVisible="{Binding !HasNoTabs}"
+                       TabStripPlacement="Top">
+                <TabControl.ItemTemplate>
+                    <DataTemplate DataType="vm:LogTabViewModel">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <PathIcon Data="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z M6 4h7v5h5v10H6V4z"
+                                     Width="14" Height="14"
+                                     VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding FileName}" 
+                                      VerticalAlignment="Center"/>
+                            <Button Content="×" 
+                                   FontSize="16"
+                                   Padding="4,0"
+                                   Background="Transparent"
+                                   Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).CloseTabCommand}"
+                                   CommandParameter="{Binding}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+                <TabControl.ContentTemplate>
+                    <DataTemplate DataType="vm:LogTabViewModel">
+                        <views:LogTabView DataContext="{Binding}"/>
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
+            </TabControl>
+
+            <!-- Empty State -->
+            <StackPanel IsVisible="{Binding HasNoTabs}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Spacing="16">
+                <PathIcon Data="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z M6 4h7v5h5v10H6V4z M8 13h8v2H8v-2z M8 9h8v2H8V9z"
+                         Width="64" Height="64"
+                         Foreground="{DynamicResource SystemAccentColor}"/>
+                <TextBlock Text="No log files open" 
+                          FontSize="20"
+                          FontWeight="SemiBold"
+                          HorizontalAlignment="Center"/>
+                <TextBlock Text="Click 'Open Log...' or drag a file here" 
+                          FontSize="14"
+                          Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                          HorizontalAlignment="Center"/>
+                <Button Content="Open Log..." 
+                       HorizontalAlignment="Center"
+                       Command="{Binding OpenFileCommand}"
+                       CommandParameter="{Binding $parent[Window]}"/>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+
+</Window>

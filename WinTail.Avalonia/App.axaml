@@ -1,0 +1,42 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="WinTail.Avalonia.App"
+             xmlns:local="using:WinTail.Avalonia"
+             RequestedThemeVariant="Default">
+    <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+  
+    <Application.Styles>
+        <FluentTheme />
+        
+        <!-- Custom Styles for WinTail -->
+        <Style Selector="Window">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundAltHighBrush}"/>
+        </Style>
+        
+        <Style Selector="TabControl">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundAltHighBrush}"/>
+        </Style>
+        
+        <Style Selector="TabItem">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="MinHeight" Value="36"/>
+        </Style>
+        
+        <Style Selector="Button">
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+        
+        <Style Selector="TextBox">
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+        
+        <!-- Accent color for icons and highlights -->
+        <Style Selector="PathIcon">
+            <Setter Property="Foreground" Value="{DynamicResource SystemAccentColor}"/>
+        </Style>
+    </Application.Styles>
+</Application>
