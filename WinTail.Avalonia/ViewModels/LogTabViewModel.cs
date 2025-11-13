@@ -41,6 +41,14 @@ namespace WinTail.Avalonia.ViewModels
         [ObservableProperty]
         private bool _isFilterVisible;
 
+        [ObservableProperty]
+        private DateTime _lastUpdate = DateTime.Now;
+
+        /// <summary>
+        /// Display title with filename and last update time
+        /// </summary>
+        public string DisplayTitle => $"{FileName} - Updated: {LastUpdate:HH:mm:ss}";
+
         public LogTabViewModel(LogTab logTab)
         {
             _logTab = logTab;
@@ -61,6 +69,7 @@ namespace WinTail.Avalonia.ViewModels
                 _logLines.Clear();
                 _logLines.AddRange(_fileWatcher.ReadLastLines(1000));
                 UpdateLogDisplay();
+                UpdateTimestamp();
             }
             catch (Exception ex)
             {
@@ -88,6 +97,7 @@ namespace WinTail.Avalonia.ViewModels
                 }
 
                 UpdateLogDisplay();
+                UpdateTimestamp();
             });
         }
 
@@ -104,6 +114,12 @@ namespace WinTail.Avalonia.ViewModels
             {
                 LogContent = string.Join(Environment.NewLine, _logLines);
             }
+        }
+
+        private void UpdateTimestamp()
+        {
+            LastUpdate = DateTime.Now;
+            OnPropertyChanged(nameof(DisplayTitle));
         }
 
         [RelayCommand]
