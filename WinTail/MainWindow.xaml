@@ -1,0 +1,136 @@
+<Window
+    x:Class="WinTail.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WinTail"
+    xmlns:viewmodels="using:WinTail.ViewModels"
+    xmlns:controls="using:WinTail.Controls"
+    Title="WinTail">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Command Bar -->
+        <Grid Grid.Row="0" 
+              Padding="8,8,8,4" 
+              Background="{ThemeResource LayerFillColorDefaultBrush}"
+              BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+              BorderThickness="0,0,0,1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left side controls -->
+            <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8">
+                <Button x:Name="OpenFileButton" 
+                        Click="OpenFileButton_Click"
+                        ToolTipService.ToolTip="Open file(s)">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <SymbolIcon Symbol="OpenFile"/>
+                        <TextBlock Text="Open"/>
+                    </StackPanel>
+                </Button>
+
+                <AppBarSeparator/>
+
+                <ToggleButton x:Name="FollowToggle" 
+                              IsChecked="{x:Bind ViewModel.IsFollowing, Mode=TwoWay}"
+                              ToolTipService.ToolTip="Start/Stop following">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <SymbolIcon Symbol="Play"/>
+                        <TextBlock Text="{x:Bind ViewModel.FollowButtonText, Mode=OneWay}"/>
+                    </StackPanel>
+                </ToggleButton>
+            </StackPanel>
+
+            <!-- Right side controls -->
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="12">
+                <ComboBox x:Name="LanguageSelector"
+                          Header="Syntax"
+                          MinWidth="120"
+                          SelectedIndex="{x:Bind ViewModel.SelectedLanguageIndex, Mode=TwoWay}"
+                          ItemsSource="{x:Bind ViewModel.AvailableLanguages, Mode=OneWay}"/>
+
+                <ComboBox x:Name="ThemeSelector"
+                          Header="Theme"
+                          MinWidth="120"
+                          SelectedIndex="{x:Bind ViewModel.SelectedThemeIndex, Mode=TwoWay}"
+                          ItemsSource="{x:Bind ViewModel.AvailableThemes, Mode=OneWay}"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Tab View -->
+        <TabView Grid.Row="1"
+                 x:Name="FileTabView"
+                 TabItemsSource="{x:Bind ViewModel.Tabs, Mode=OneWay}"
+                 SelectedItem="{x:Bind ViewModel.SelectedTab, Mode=TwoWay}"
+                 AddTabButtonClick="TabView_AddTabButtonClick"
+                 TabCloseRequested="TabView_TabCloseRequested"
+                 CanDragTabs="True"
+                 CanReorderTabs="True"
+                 AllowDropTabs="True">
+            <TabView.TabItemTemplate>
+                <DataTemplate x:DataType="viewmodels:FileTabViewModel">
+                    <TabViewItem Header="{x:Bind FileName, Mode=OneWay}"
+                                 ToolTipService.ToolTip="{x:Bind FilePath, Mode=OneWay}"
+                                 IconSource="{x:Bind TabIcon, Mode=OneWay}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Status Info Bar (shown when paused or error) -->
+                            <InfoBar Grid.Row="0"
+                                     IsOpen="{x:Bind ShowStatusInfo, Mode=OneWay}"
+                                     Severity="{x:Bind StatusSeverity, Mode=OneWay}"
+                                     Title="{x:Bind StatusTitle, Mode=OneWay}"
+                                     Message="{x:Bind StatusMessage, Mode=OneWay}"
+                                     IsClosable="False"
+                                     Margin="8,8,8,4"/>
+
+                            <!-- Text Content Area with Syntax Highlighting -->
+                            <controls:SyntaxTextBlock Grid.Row="1"
+                                                      Text="{x:Bind Content, Mode=OneWay}"
+                                                      SyntaxLanguage="{x:Bind SyntaxLanguage, Mode=OneWay}"
+                                                      FontFamily="Cascadia Code,Consolas,Courier New"
+                                                      FontSize="12"/>
+                        </Grid>
+                    </TabViewItem>
+                </DataTemplate>
+            </TabView.TabItemTemplate>
+        </TabView>
+
+        <!-- Status Bar -->
+        <Grid Grid.Row="2" 
+              Padding="12,4" 
+              Background="{ThemeResource LayerFillColorDefaultBrush}"
+              BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+              BorderThickness="0,1,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" 
+                       Text="{x:Bind ViewModel.StatusText, Mode=OneWay}"
+                       VerticalAlignment="Center"
+                       Opacity="0.8"/>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="16">
+                <TextBlock Text="{x:Bind ViewModel.TotalLinesText, Mode=OneWay}"
+                           VerticalAlignment="Center"
+                           Opacity="0.8"/>
+                <TextBlock Text="{x:Bind ViewModel.StateText, Mode=OneWay}"
+                           VerticalAlignment="Center"
+                           Opacity="0.8"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
