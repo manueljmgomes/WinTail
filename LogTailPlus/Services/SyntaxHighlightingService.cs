@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Xml;
 
-namespace WinTail.Avalonia.Services
+namespace LogTailPlus.Services
 {
     /// <summary>
     /// Service to detect and provide syntax highlighting definitions based on file extensions

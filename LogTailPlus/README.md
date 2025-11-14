@@ -1,4 +1,4 @@
-# WinTail - Cross-Platform Log Viewer (Avalonia UI)
+# LogTailPlus - Cross-Platform Log Viewer (Avalonia UI)
 
 A modern, cross-platform log file viewer built with Avalonia UI and .NET 10.
 
@@ -59,7 +59,7 @@ chmod +x build-mac.sh
 
 ### Opening Log Files
 - Click **"Open Log..."** button in the toolbar
-- Pass file path as command-line argument: `WinTail.Avalonia mylog.log`
+- Pass file path as command-line argument: `LogTailPlus mylog.log`
 - Drag & drop files onto the window
 
 ### Search
@@ -110,7 +110,7 @@ Special highlighting for:
 
 ### Project Structure
 ```
-WinTail.Avalonia/
+LogTailPlus/
 ??? App.axaml[.cs]           # Application entry point
 ??? Models/                  # Data models
 ?   ??? LogTab.cs
@@ -168,7 +168,7 @@ This project is licensed under the MIT License.
 
 ## ?? Contact
 
-For bugs and feature requests, please open an issue on GitHub: https://github.com/manueljmgomes/WinTail/issues
+For bugs and feature requests, please open an issue on GitHub: https://github.com/manueljmgomes/LogTailPlus/issues
 
 ---
 

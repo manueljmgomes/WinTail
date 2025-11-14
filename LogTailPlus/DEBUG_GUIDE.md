@@ -9,7 +9,7 @@ I've added extensive Debug.WriteLine() logging throughout the code to trace the 
 ## How to Run and Collect Debug Output
 
 ### Option 1: Run with Visual Studio
-1. Open WinTail.Avalonia.csproj in Visual Studio 2022
+1. Open LogTailPlus.csproj in Visual Studio 2022
 2. Press F5 to run in Debug mode
 3. Open the Output window (View > Output)
 4. Select "Debug" from the "Show output from:" dropdown
@@ -19,7 +19,7 @@ I've added extensive Debug.WriteLine() logging throughout the code to trace the 
 ### Option 2: Run from Command Line
 ```powershell
 # Navigate to project directory
-cd e:\personalProjects\WinTail\WinTail.Avalonia
+cd e:\personalProjects\WinTail\LogTailPlus
 
 # Run with debug output
 dotnet run > debug_output.txt 2>&1
@@ -127,7 +127,7 @@ Check debug output for:
 
 ## Quick Test Command
 ```powershell
-cd e:\personalProjects\WinTail\WinTail.Avalonia
+cd e:\personalProjects\WinTail\LogTailPlus
 dotnet run -- test.log 2>&1 | Select-String -Pattern "\[FileWatcher\]|\[LogTabViewModel\]|\[LogTabView\]"
 ```
 
@@ -145,4 +145,4 @@ If AvaloniaEdit is the problem, we can:
 4. Implement targeted fix based on findings
 
 ## Test File Location
-`WinTail.Avalonia/test.log` - 32 lines of sample log data
+`LogTailPlus/test.log` - 32 lines of sample log data

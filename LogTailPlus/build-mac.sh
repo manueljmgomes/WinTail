@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# WinTail - macOS Build Script
+# LogTailPlus - macOS Build Script
 # This script builds WinTail for macOS (both Intel and Apple Silicon)
 
 set -e  # Exit on error
@@ -74,8 +74,8 @@ mkdir -p "$APP_DIR/Contents/MacOS"
 mkdir -p "$APP_DIR/Contents/Resources"
 
 # Copy executable and all files
-cp "$PUBLISH_DIR/WinTail.Avalonia" "$APP_DIR/Contents/MacOS/"
-find "$PUBLISH_DIR" -maxdepth 1 -type f ! -name "WinTail.Avalonia" -exec cp {} "$APP_DIR/Contents/MacOS/" \;
+cp "$PUBLISH_DIR/LogTailPlus" "$APP_DIR/Contents/MacOS/"
+find "$PUBLISH_DIR" -maxdepth 1 -type f ! -name "LogTailPlus" -exec cp {} "$APP_DIR/Contents/MacOS/" \;
 
 # Create Info.plist
 cat > "$APP_DIR/Contents/Info.plist" << 'PLIST'
@@ -84,9 +84,9 @@ cat > "$APP_DIR/Contents/Info.plist" << 'PLIST'
 <plist version="1.0">
 <dict>
     <key>CFBundleExecutable</key>
-    <string>WinTail.Avalonia</string>
+    <string>LogTailPlus</string>
     <key>CFBundleIdentifier</key>
-    <string>com.wintail.avalonia</string>
+    <string>com.LogTailPlus</string>
     <key>CFBundleName</key>
     <string>WinTail</string>
     <key>CFBundleDisplayName</key>
@@ -127,7 +127,7 @@ cat > "$APP_DIR/Contents/Info.plist" << 'PLIST'
 PLIST
 
 # Make executable
-chmod +x "$APP_DIR/Contents/MacOS/WinTail.Avalonia"
+chmod +x "$APP_DIR/Contents/MacOS/LogTailPlus"
 
 # Remove quarantine attribute
 xattr -cr "$APP_DIR" 2>/dev/null || true
@@ -147,7 +147,7 @@ echo "To run the app:"
 echo "  open $APP_DIR"
 echo ""
 echo "Or from command line:"
-echo "  ./$APP_DIR/Contents/MacOS/WinTail.Avalonia"
+echo "  ./$APP_DIR/Contents/MacOS/LogTailPlus"
 echo ""
 echo "To install to Applications:"
 echo "  cp -R $APP_DIR /Applications/"

@@ -1,14 +1,14 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:WinTail.Avalonia.ViewModels"
-        xmlns:views="using:WinTail.Avalonia.Views"
+        xmlns:vm="using:LogTailPlus.ViewModels"
+        xmlns:views="using:LogTailPlus.Views"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="700"
-        x:Class="WinTail.Avalonia.Views.MainWindow"
+        x:Class="LogTailPlus.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="WinTail - Log Viewer"
+        Title="LogTailPlus - Log Viewer"
         Width="1200" Height="700"
         WindowStartupLocation="CenterScreen">
 
@@ -51,7 +51,7 @@
                 <TextBlock Text="|" 
                            VerticalAlignment="Center"
                            Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
-                <TextBlock Text="WinTail - Cross-Platform Log Viewer" 
+                <TextBlock Text="LogTailPlus - Cross-Platform Log Viewer" 
                            VerticalAlignment="Center"
                            FontWeight="SemiBold"/>
             </StackPanel>

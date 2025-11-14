@@ -5,11 +5,11 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
-using WinTail.Avalonia.Services;
-using WinTail.Avalonia.ViewModels;
-using WinTail.Avalonia.Views;
+using LogTailPlus.Services;
+using LogTailPlus.ViewModels;
+using LogTailPlus.Views;
 
-namespace WinTail.Avalonia;
+namespace LogTailPlus;
 
 public partial class App : Application
 {

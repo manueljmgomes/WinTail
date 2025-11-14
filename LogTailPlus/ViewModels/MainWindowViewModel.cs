@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -7,10 +7,10 @@ using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using WinTail.Avalonia.Models;
-using WinTail.Avalonia.Services;
+using LogTailPlus.Models;
+using LogTailPlus.Services;
 
-namespace WinTail.Avalonia.ViewModels;
+namespace LogTailPlus.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {

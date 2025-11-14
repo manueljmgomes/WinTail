@@ -7,10 +7,10 @@ using Avalonia.Controls;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using WinTail.Avalonia.Models;
-using WinTail.Avalonia.Services;
+using LogTailPlus.Models;
+using LogTailPlus.Services;
 
-namespace WinTail.Avalonia.ViewModels
+namespace LogTailPlus.ViewModels
 {
     public partial class LogTabViewModel : ViewModelBase
     {

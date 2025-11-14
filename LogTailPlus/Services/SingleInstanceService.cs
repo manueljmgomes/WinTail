@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace WinTail.Avalonia.Services
+namespace LogTailPlus.Services
 {
     /// <summary>
     /// Service to ensure only one instance of the application is running.

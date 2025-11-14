@@ -8,10 +8,10 @@ using AvaloniaEdit.Highlighting;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using WinTail.Avalonia.Services;
-using WinTail.Avalonia.ViewModels;
+using LogTailPlus.Services;
+using LogTailPlus.ViewModels;
 
-namespace WinTail.Avalonia.Views
+namespace LogTailPlus.Views
 {
     public partial class LogTabView : UserControl
     {

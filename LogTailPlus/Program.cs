@@ -1,7 +1,7 @@
-﻿using Avalonia;
+using Avalonia;
 using System;
 
-namespace WinTail.Avalonia;
+namespace LogTailPlus;
 
 sealed class Program
 {

@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace WinTail.Avalonia.Models
+namespace LogTailPlus.Models
 {
     /// <summary>
     /// Represents a tab with a log file.

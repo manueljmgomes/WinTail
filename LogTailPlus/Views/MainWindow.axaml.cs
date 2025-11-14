@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace WinTail.Avalonia.Views;
+namespace LogTailPlus.Views;
 
 public partial class MainWindow : Window
 {

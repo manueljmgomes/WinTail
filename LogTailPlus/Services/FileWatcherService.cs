@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace WinTail.Avalonia.Services
+namespace LogTailPlus.Services
 {
     /// <summary>
     /// Service to monitor log file changes and read the last lines.
