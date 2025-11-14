@@ -138,7 +138,8 @@
                             <Border Background="#FAFAFA" 
                                     CornerRadius="0,0,4,4"
                                     Margin="0,4,0,0">
-                                <views:LogTabView DataContext="{Binding}"/>
+                                <!-- USE SIMPLE VERSION TEMPORARY -->
+                                <views:LogTabViewSimple DataContext="{Binding}"/>
                             </Border>
                         </DataTemplate>
                     </TabControl.ContentTemplate>
