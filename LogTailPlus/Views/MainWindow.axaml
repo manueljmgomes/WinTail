@@ -138,8 +138,8 @@
                             <Border Background="#FAFAFA" 
                                     CornerRadius="0,0,4,4"
                                     Margin="0,4,0,0">
-                                <!-- USE SIMPLE VERSION TEMPORARY -->
-                                <views:LogTabViewSimple DataContext="{Binding}"/>
+                                <!-- Back to normal LogTabView with syntax highlighting -->
+                                <views:LogTabView DataContext="{Binding}"/>
                             </Border>
                         </DataTemplate>
                     </TabControl.ContentTemplate>

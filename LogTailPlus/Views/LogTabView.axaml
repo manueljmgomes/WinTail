@@ -164,24 +164,24 @@
             </DockPanel>
         </Border>
 
-        <!-- Log Content with Modern Editor Styling -->
+        <!-- Log Content with AvaloniaEdit -->
         <Border Background="#FFFFFF" 
                 BorderBrush="#E5E5E5"
                 BorderThickness="1"
                 CornerRadius="0,0,4,4"
                 Margin="8">
-            <avaloniaEdit:TextEditor x:Name="Editor"
-                                    FontFamily="Cascadia Code, Cascadia Mono, Consolas, Courier New, monospace"
-                                    FontSize="12"
-                                    ShowLineNumbers="True"
-                                    IsReadOnly="True"
-                                    WordWrap="False"
-                                    Background="#FAFAFA"
-                                    Foreground="#2C2C2C"
-                                    LineNumbersForeground="#A0A0A0"
-                                    VerticalScrollBarVisibility="Auto"
-                                    HorizontalScrollBarVisibility="Auto"
-                                    Padding="8"/>
+            <avaloniaEdit:TextEditor 
+                x:Name="LogEditor"
+                FontFamily="Cascadia Code, Cascadia Mono, Consolas, Courier New, monospace"
+                FontSize="12"
+                ShowLineNumbers="True"
+                IsReadOnly="True"
+                WordWrap="False"
+                Background="#FAFAFA"
+                Foreground="#2C2C2C"
+                VerticalScrollBarVisibility="Auto"
+                HorizontalScrollBarVisibility="Auto"
+                Padding="8"/>
         </Border>
     </DockPanel>
 
