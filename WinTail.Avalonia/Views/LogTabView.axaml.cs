@@ -18,7 +18,6 @@ namespace WinTail.Avalonia.Views
         private TextEditor? _editor;
         private TextDocument? _document;
         private LogTabViewModel? _viewModel;
-        private bool _isSetup = false;
 
         public LogTabView()
         {
@@ -38,11 +37,18 @@ namespace WinTail.Avalonia.Views
         {
             Debug.WriteLine($"[LogTabView] OnDataContextChanged: DataContext = {DataContext?.GetType().Name ?? "null"}");
             
-            // Don't clear the editor if DataContext is null (temporary state during tab switching)
+            // Don't process if DataContext is null (temporary state during tab switching)
             if (DataContext is not LogTabViewModel viewModel)
             {
                 Debug.WriteLine("[LogTabView] DataContext is null or not LogTabViewModel, skipping update");
                 return;
+            }
+
+            // Unsubscribe from old ViewModel if it exists
+            if (_viewModel != null)
+            {
+                _viewModel.PropertyChanged -= OnViewModelPropertyChanged;
+                Debug.WriteLine("[LogTabView] Unsubscribed from old ViewModel");
             }
 
             // Store the new ViewModel
@@ -74,8 +80,8 @@ namespace WinTail.Avalonia.Views
                 Debug.WriteLine("[LogTabView] TextDocument created and assigned to editor");
             }
 
-            // Step 3: Setup editor with ViewModel if we have both and haven't set up yet
-            if (_viewModel != null && !_isSetup)
+            // Step 3: Setup editor with ViewModel if we have both
+            if (_viewModel != null)
             {
                 SetupEditor();
             }
@@ -106,16 +112,13 @@ namespace WinTail.Avalonia.Views
                 Debug.WriteLine($"[LogTabView] Syntax highlighting failed: {ex.Message}");
             }
 
-            // Unsubscribe first to avoid duplicate subscriptions
-            _viewModel.PropertyChanged -= OnViewModelPropertyChanged;
-            
-            // Subscribe to content changes
+            // Subscribe to content changes (already unsubscribed in OnDataContextChanged)
             _viewModel.PropertyChanged += OnViewModelPropertyChanged;
+            Debug.WriteLine("[LogTabView] Subscribed to ViewModel PropertyChanged");
 
             // Set initial content
             UpdateEditorContent();
             
-            _isSetup = true;
             Debug.WriteLine("[LogTabView] Setup complete");
         }
 
@@ -139,29 +142,31 @@ namespace WinTail.Avalonia.Views
             var content = _viewModel.LogContent ?? string.Empty;
             Debug.WriteLine($"[LogTabView] Updating editor with {content.Length} characters");
 
-            Dispatcher.UIThread.Post(() =>
+            // Use InvokeAsync instead of Post for more immediate execution
+            Dispatcher.UIThread.InvokeAsync(() =>
             {
                 try
                 {
-                    if (_document != null)
+                    if (_document != null && _editor != null)
                     {
                         // Update document text (more reliable than Text property)
                         _document.Text = content;
 
                         // Scroll to end if there's content
-                        if (!string.IsNullOrEmpty(content) && _editor != null)
+                        if (!string.IsNullOrEmpty(content))
                         {
                             _editor.ScrollToEnd();
                         }
 
-                        Debug.WriteLine("[LogTabView] Editor document updated successfully");
+                        Debug.WriteLine($"[LogTabView] Editor document updated successfully - Document now has {_document.TextLength} chars");
                     }
                 }
                 catch (Exception ex)
                 {
                     Debug.WriteLine($"[LogTabView] Error updating editor: {ex.Message}");
+                    Debug.WriteLine($"[LogTabView] Stack trace: {ex.StackTrace}");
                 }
-            }, DispatcherPriority.Background);
+            }, DispatcherPriority.Render); // Use Render priority for immediate visual update
         }
     }
 }
