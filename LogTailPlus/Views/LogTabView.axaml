@@ -9,146 +9,180 @@
              x:DataType="vm:LogTabViewModel">
 
     <UserControl.Styles>
+        <!-- Modern Button Styling -->
         <Style Selector="Button.toolbutton">
             <Setter Property="Margin" Value="4"/>
-            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Background" Value="#F0F0F0"/>
+            <Setter Property="BorderThickness" Value="0"/>
         </Style>
+        
+        <Style Selector="Button.toolbutton:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#E5E5E5"/>
+        </Style>
+        
+        <Style Selector="Button.toolbutton:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="#D0D0D0"/>
+        </Style>
+        
         <Style Selector="Button.close-x">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Padding" Value="4"/>
-            <Setter Property="Width" Value="24"/>
-            <Setter Property="Height" Value="24"/>
+            <Setter Property="Padding" Value="6"/>
+            <Setter Property="Width" Value="28"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+        
+        <Style Selector="Button.close-x:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#15000000"/>
+        </Style>
+        
+        <Style Selector="TextBox">
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,8"/>
         </Style>
     </UserControl.Styles>
 
     <DockPanel>
-        <!-- Toolbar -->
+        <!-- Modern Toolbar -->
         <Border DockPanel.Dock="Top" 
-                Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
-                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                Background="#FFFFFF"
+                BorderBrush="#E5E5E5"
                 BorderThickness="0,0,0,1"
-                Padding="8">
-            <StackPanel Orientation="Horizontal" Spacing="4">
-                <Button Content="Search" 
-                       Classes="toolbutton"
-                       Command="{Binding ToggleSearchCommand}">
-                    <Button.ContentTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Spacing="4">
-                                <PathIcon Data="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
-                                         Width="14" Height="14"/>
-                                <TextBlock Text="Search" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </Button.ContentTemplate>
+                Padding="12,8">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+                <Button Classes="toolbutton"
+                       Command="{Binding ToggleSearchCommand}"
+                       ToolTip.Tip="Search in log">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <PathIcon Data="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                                 Width="14" Height="14"
+                                 Foreground="#505050"/>
+                        <TextBlock Text="Search" VerticalAlignment="Center" Foreground="#2C2C2C"/>
+                    </StackPanel>
                 </Button>
                 
-                <Button Content="Filter" 
-                       Classes="toolbutton"
-                       Command="{Binding ToggleFilterCommand}">
-                    <Button.ContentTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Spacing="4">
-                                <PathIcon Data="M4.25 5.61C6.27 8.2 10 13 10 13v6c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-6s3.72-4.8 5.74-7.39A.998.998 0 0 0 18.95 4H5.04c-.83 0-1.3.95-.79 1.61z"
-                                         Width="14" Height="14"/>
-                                <TextBlock Text="Filter" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </Button.ContentTemplate>
+                <Button Classes="toolbutton"
+                       Command="{Binding ToggleFilterCommand}"
+                       ToolTip.Tip="Filter lines">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <PathIcon Data="M4.25 5.61C6.27 8.2 10 13 10 13v6c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-6s3.72-4.8 5.74-7.39A.998.998 0 0 0 18.95 4H5.04c-.83 0-1.3.95-.79 1.61z"
+                                 Width="14" Height="14"
+                                 Foreground="#505050"/>
+                        <TextBlock Text="Filter" VerticalAlignment="Center" Foreground="#2C2C2C"/>
+                    </StackPanel>
                 </Button>
                 
-                <Button Content="Copy" 
-                       Classes="toolbutton"
-                       Command="{Binding CopyContentCommand}">
-                    <Button.ContentTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Spacing="4">
-                                <PathIcon Data="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
-                                         Width="14" Height="14"/>
-                                <TextBlock Text="Copy" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </Button.ContentTemplate>
+                <Button Classes="toolbutton"
+                       Command="{Binding CopyContentCommand}"
+                       ToolTip.Tip="Copy content">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <PathIcon Data="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
+                                 Width="14" Height="14"
+                                 Foreground="#505050"/>
+                        <TextBlock Text="Copy" VerticalAlignment="Center" Foreground="#2C2C2C"/>
+                    </StackPanel>
                 </Button>
                 
-                <Button Content="Refresh" 
-                       Classes="toolbutton"
-                       Command="{Binding RefreshCommand}">
-                    <Button.ContentTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Spacing="4">
-                                <PathIcon Data="M17.65 6.35a7.958 7.958 0 0 0-6.48-3.32c-3.67.37-6.69 3.35-7.1 7.02C3.52 13.91 6.27 17 10 17c3.19 0 5.93-1.87 7.21-4.56.32-.67-.16-1.44-.9-1.44-.37 0-.72.2-.88.53-1.13 2.43-3.84 3.97-6.8 3.31-2.22-.49-4.01-2.3-4.48-4.52C3.47 6.42 6.26 3 10 3c2.12 0 4 .88 5.35 2.26L13 7h6V1l-1.35 1.35z"
-                                         Width="14" Height="14"/>
-                                <TextBlock Text="Refresh" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </Button.ContentTemplate>
+                <Button Classes="toolbutton"
+                       Command="{Binding RefreshCommand}"
+                       ToolTip.Tip="Refresh log">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <PathIcon Data="M17.65 6.35a7.958 7.958 0 0 0-6.48-3.32c-3.67.37-6.69 3.35-7.1 7.02C3.52 13.91 6.27 17 10 17c3.19 0 5.93-1.87 7.21-4.56.32-.67-.16-1.44-.9-1.44-.37 0-.72.2-.88.53-1.13 2.43-3.84 3.97-6.8 3.31-2.22-.49-4.01-2.3-4.48-4.52C3.47 6.42 6.26 3 10 3c2.12 0 4 .88 5.35 2.26L13 7h6V1l-1.35 1.35z"
+                                 Width="14" Height="14"
+                                 Foreground="#505050"/>
+                        <TextBlock Text="Refresh" VerticalAlignment="Center" Foreground="#2C2C2C"/>
+                    </StackPanel>
                 </Button>
+                
+                <Rectangle Width="1" Height="24" Fill="#E0E0E0" VerticalAlignment="Center" Margin="8,0"/>
                 
                 <TextBlock Text="{Binding DisplayTitle}" 
                           VerticalAlignment="Center"
-                          Margin="16,0,0,0"
-                          FontWeight="SemiBold"/>
+                          FontSize="12"
+                          FontWeight="Medium"
+                          Foreground="#505050"/>
             </StackPanel>
         </Border>
 
-        <!-- Search Panel -->
+        <!-- Search Panel with Modern Design -->
         <Border DockPanel.Dock="Top"
-                Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                Background="#F8F8F8"
+                BorderBrush="#E5E5E5"
                 BorderThickness="0,0,0,1"
-                Padding="12"
+                Padding="16,12"
                 IsVisible="{Binding IsSearchVisible}">
             <DockPanel>
                 <Button DockPanel.Dock="Right" 
                        Classes="close-x"
-                       Command="{Binding ToggleSearchCommand}">
+                       Command="{Binding ToggleSearchCommand}"
+                       ToolTip.Tip="Close search">
                     <PathIcon Data="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-                             Width="14" Height="14"/>
+                             Width="14" Height="14"
+                             Foreground="#505050"/>
                 </Button>
                 <TextBox Text="{Binding SearchTerm}"
                         Watermark="Search in log..."
-                        MinWidth="300"/>
+                        MinWidth="300"
+                        Background="#FFFFFF"
+                        BorderBrush="#D0D0D0"/>
             </DockPanel>
         </Border>
 
-        <!-- Filter Panel -->
+        <!-- Filter Panel with Modern Design -->
         <Border DockPanel.Dock="Top"
-                Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                Background="#F8F8F8"
+                BorderBrush="#E5E5E5"
                 BorderThickness="0,0,0,1"
-                Padding="12"
+                Padding="16,12"
                 IsVisible="{Binding IsFilterVisible}">
             <DockPanel>
                 <StackPanel DockPanel.Dock="Right" 
                            Orientation="Horizontal" 
                            Spacing="8">
                     <Button Content="Apply" 
+                           Classes="toolbutton"
                            Command="{Binding ApplyFilterCommand}"/>
                     <Button Content="Clear" 
+                           Classes="toolbutton"
                            Command="{Binding ClearFilterCommand}"/>
                     <Button Classes="close-x"
-                           Command="{Binding ToggleFilterCommand}">
+                           Command="{Binding ToggleFilterCommand}"
+                           ToolTip.Tip="Close filter">
                         <PathIcon Data="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-                                 Width="14" Height="14"/>
+                                 Width="14" Height="14"
+                                 Foreground="#505050"/>
                     </Button>
                 </StackPanel>
                 <TextBox Text="{Binding FilterTerm}"
                         Watermark="Filter lines containing..."
-                        MinWidth="300"/>
+                        MinWidth="300"
+                        Background="#FFFFFF"
+                        BorderBrush="#D0D0D0"/>
             </DockPanel>
         </Border>
 
-        <!-- Log Content with Syntax Highlighting -->
-        <avaloniaEdit:TextEditor x:Name="Editor"
-                                FontFamily="Cascadia Mono, Consolas, Courier New, monospace"
-                                FontSize="12"
-                                ShowLineNumbers="True"
-                                IsReadOnly="True"
-                                WordWrap="False"
-                                Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
-                                VerticalScrollBarVisibility="Auto"
-                                HorizontalScrollBarVisibility="Auto"/>
+        <!-- Log Content with Modern Editor Styling -->
+        <Border Background="#FFFFFF" 
+                BorderBrush="#E5E5E5"
+                BorderThickness="1"
+                CornerRadius="0,0,4,4"
+                Margin="8">
+            <avaloniaEdit:TextEditor x:Name="Editor"
+                                    FontFamily="Cascadia Code, Cascadia Mono, Consolas, Courier New, monospace"
+                                    FontSize="12"
+                                    ShowLineNumbers="True"
+                                    IsReadOnly="True"
+                                    WordWrap="False"
+                                    Background="#FAFAFA"
+                                    Foreground="#2C2C2C"
+                                    LineNumbersForeground="#A0A0A0"
+                                    VerticalScrollBarVisibility="Auto"
+                                    HorizontalScrollBarVisibility="Auto"
+                                    Padding="8"/>
+        </Border>
     </DockPanel>
 
 </UserControl>

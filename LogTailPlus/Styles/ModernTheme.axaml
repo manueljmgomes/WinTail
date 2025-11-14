@@ -1,0 +1,72 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- Windows 11 Inspired Theme -->
+    
+    <!-- Modern Button Animations -->
+    <Style Selector="Button">
+        <Setter Property="Transitions">
+            <Transitions>
+                <DoubleTransition Property="Opacity" Duration="0:0:0.2"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    
+    <Style Selector="Button:pointerover">
+        <Setter Property="Opacity" Value="0.9"/>
+    </Style>
+    
+    <Style Selector="Button:pressed">
+        <Setter Property="Opacity" Value="0.7"/>
+    </Style>
+    
+    <!-- TabItem Animations -->
+    <Style Selector="TabItem">
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.2"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    
+    <!-- Border Animations -->
+    <Style Selector="Border">
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.2"/>
+                <BrushTransition Property="BorderBrush" Duration="0:0:0.2"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    
+    <!-- TextBox Focus Effects -->
+    <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+        <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentColor}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+    </Style>
+    
+    <!-- ScrollBar Styling (Windows 11 slim style) -->
+    <Style Selector="ScrollBar">
+        <Setter Property="AllowAutoHide" Value="True"/>
+        <Setter Property="Margin" Value="0"/>
+    </Style>
+    
+    <Style Selector="ScrollBar:vertical">
+        <Setter Property="Width" Value="12"/>
+    </Style>
+    
+    <Style Selector="ScrollBar:horizontal">
+        <Setter Property="Height" Value="12"/>
+    </Style>
+    
+    <!-- ToolTip Modern Styling -->
+    <Style Selector="ToolTip">
+        <Setter Property="Background" Value="#F3F3F3"/>
+        <Setter Property="BorderBrush" Value="#E0E0E0"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="Padding" Value="8,4"/>
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+    
+</Styles>
